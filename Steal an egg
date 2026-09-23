@@ -1,0 +1,787 @@
+-- ============================================================
+-- 𖤐 𝐃𝐀𝐑𝐊 𝐇𝐔𝐁 𖤐 - KEY SYSTEM + UI (Compacto + Arrastável)
+-- ============================================================
+
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local GuiService = game:GetService("GuiService")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+-- ============ CONFIGURAÇÕES ============
+local KEY_CORRETA = "DARKZINNMVP"
+local DISCORD_LINK = "https://discord.gg/9CR5Fnqrv2"
+
+-- ============================================================
+-- FUNÇÃO PARA ABRIR LINKS (tenta vários métodos)
+-- ============================================================
+local function abrirLink(url)
+    local abriu = false
+
+    pcall(function()
+        GuiService:OpenBrowserWindow(url)
+        abriu = true
+    end)
+
+    if not abriu and setclipboard then
+        pcall(function()
+            setclipboard(url)
+        end)
+    end
+
+    return abriu
+end
+
+-- ============================================================
+-- PARTE 1: SISTEMA DE KEY
+-- ============================================================
+
+local KeyGui = Instance.new("ScreenGui")
+KeyGui.Name = "DarkHubKeySystem"
+KeyGui.ResetOnSpawn = false
+KeyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+KeyGui.DisplayOrder = 100
+KeyGui.Parent = PlayerGui
+
+local Overlay = Instance.new("Frame")
+Overlay.Size = UDim2.new(1, 0, 1, 0)
+Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Overlay.BackgroundTransparency = 0.65
+Overlay.BorderSizePixel = 0
+Overlay.Parent = KeyGui
+
+local KeyFrame = Instance.new("Frame")
+KeyFrame.Name = "KeyFrame"
+KeyFrame.Size = UDim2.new(0, 360, 0, 310)
+KeyFrame.Position = UDim2.new(0.5, -180, 0.5, -155)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 22)
+KeyFrame.BorderSizePixel = 0
+KeyFrame.Active = true
+KeyFrame.Parent = KeyGui
+
+local kfCorner = Instance.new("UICorner")
+kfCorner.CornerRadius = UDim.new(0, 12)
+kfCorner.Parent = KeyFrame
+
+local kfStroke = Instance.new("UIStroke")
+kfStroke.Color = Color3.fromRGB(255, 100, 50)
+kfStroke.Thickness = 1.5
+kfStroke.Transparency = 0.5
+kfStroke.Parent = KeyFrame
+
+-- ============ TOPO: KEY SYSTEM + X ============
+local TopIcon = Instance.new("TextLabel")
+TopIcon.Size = UDim2.new(0, 22, 0, 22)
+TopIcon.Position = UDim2.new(0, 15, 0, 10)
+TopIcon.BackgroundTransparency = 1
+TopIcon.Text = "🔑"
+TopIcon.TextSize = 16
+TopIcon.Font = Enum.Font.GothamBold
+TopIcon.TextColor3 = Color3.fromRGB(255, 100, 50)
+TopIcon.Parent = KeyFrame
+
+local TopLabel = Instance.new("TextLabel")
+TopLabel.Size = UDim2.new(0, 150, 0, 22)
+TopLabel.Position = UDim2.new(0, 40, 0, 10)
+TopLabel.BackgroundTransparency = 1
+TopLabel.Text = "KEY SYSTEM"
+TopLabel.TextColor3 = Color3.fromRGB(255, 100, 50)
+TopLabel.Font = Enum.Font.GothamBold
+TopLabel.TextSize = 14
+TopLabel.TextXAlignment = Enum.TextXAlignment.Left
+TopLabel.Parent = KeyFrame
+
+local KeyCloseBtn = Instance.new("TextButton")
+KeyCloseBtn.Size = UDim2.new(0, 28, 0, 28)
+KeyCloseBtn.Position = UDim2.new(1, -38, 0, 8)
+KeyCloseBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+KeyCloseBtn.BorderSizePixel = 0
+KeyCloseBtn.Text = "X"
+KeyCloseBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
+KeyCloseBtn.Font = Enum.Font.GothamBold
+KeyCloseBtn.TextSize = 13
+KeyCloseBtn.Parent = KeyFrame
+
+local kcCorner = Instance.new("UICorner")
+kcCorner.CornerRadius = UDim.new(0, 6)
+kcCorner.Parent = KeyCloseBtn
+
+KeyCloseBtn.MouseButton1Click:Connect(function()
+    KeyGui:Destroy()
+end)
+
+-- ============ WELCOME TEXT ============
+local Welcome = Instance.new("TextLabel")
+Welcome.Size = UDim2.new(1, -30, 0, 20)
+Welcome.Position = UDim2.new(0, 15, 0, 42)
+Welcome.BackgroundTransparency = 1
+Welcome.Text = "Bem-vindo ao,"
+Welcome.TextColor3 = Color3.fromRGB(255, 255, 255)
+Welcome.Font = Enum.Font.GothamBold
+Welcome.TextSize = 16
+Welcome.TextXAlignment = Enum.TextXAlignment.Left
+Welcome.Parent = KeyFrame
+
+local HubName = Instance.new("TextLabel")
+HubName.Size = UDim2.new(1, -30, 0, 28)
+HubName.Position = UDim2.new(0, 15, 0, 62)
+HubName.BackgroundTransparency = 1
+HubName.Text = "DARK HUB"
+HubName.TextColor3 = Color3.fromRGB(255, 80, 80)
+HubName.Font = Enum.Font.GothamBold
+HubName.TextSize = 24
+HubName.TextXAlignment = Enum.TextXAlignment.Left
+HubName.Parent = KeyFrame
+
+-- ============ INPUT FIELD ============
+local InputFrame = Instance.new("Frame")
+InputFrame.Size = UDim2.new(1, -30, 0, 42)
+InputFrame.Position = UDim2.new(0, 15, 0, 100)
+InputFrame.BackgroundColor3 = Color3.fromRGB(45, 35, 30)
+InputFrame.BorderSizePixel = 0
+InputFrame.Parent = KeyFrame
+
+local ifCorner = Instance.new("UICorner")
+ifCorner.CornerRadius = UDim.new(0, 8)
+ifCorner.Parent = InputFrame
+
+local ifStroke = Instance.new("UIStroke")
+ifStroke.Color = Color3.fromRGB(255, 100, 50)
+ifStroke.Thickness = 1.5
+ifStroke.Transparency = 0.4
+ifStroke.Parent = InputFrame
+
+local PasteBtn = Instance.new("TextButton")
+PasteBtn.Size = UDim2.new(0, 65, 0, 32)
+PasteBtn.Position = UDim2.new(0, 5, 0.5, -16)
+PasteBtn.BackgroundColor3 = Color3.fromRGB(60, 40, 30)
+PasteBtn.BorderSizePixel = 0
+PasteBtn.Text = "Colar"
+PasteBtn.TextColor3 = Color3.fromRGB(240, 240, 240)
+PasteBtn.Font = Enum.Font.GothamBold
+PasteBtn.TextSize = 12
+PasteBtn.Parent = InputFrame
+
+local pbCorner = Instance.new("UICorner")
+pbCorner.CornerRadius = UDim.new(0, 6)
+pbCorner.Parent = PasteBtn
+
+local KeyInput = Instance.new("TextBox")
+KeyInput.Size = UDim2.new(1, -80, 1, -10)
+KeyInput.Position = UDim2.new(0, 75, 0, 5)
+KeyInput.BackgroundTransparency = 1
+KeyInput.Text = ""
+KeyInput.PlaceholderText = "Digite sua key aqui..."
+KeyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.Font = Enum.Font.Gotham
+KeyInput.TextSize = 13
+KeyInput.TextXAlignment = Enum.TextXAlignment.Left
+KeyInput.ClearTextOnFocus = false
+KeyInput.Parent = InputFrame
+
+PasteBtn.MouseButton1Click:Connect(function()
+    local clip = nil
+    if getclipboard then
+        pcall(function() clip = getclipboard() end)
+    end
+    if not clip and clipboard and clipboard.get then
+        pcall(function() clip = clipboard.get() end)
+    end
+    if clip then
+        KeyInput.Text = clip
+    end
+end)
+
+-- ============ BOTÃO SUBMIT ============
+local SubmitBtn = Instance.new("TextButton")
+SubmitBtn.Size = UDim2.new(1, -30, 0, 42)
+SubmitBtn.Position = UDim2.new(0, 15, 0, 150)
+SubmitBtn.BackgroundColor3 = Color3.fromRGB(90, 50, 35)
+SubmitBtn.BorderSizePixel = 0
+SubmitBtn.Text = "Enviar Key  ›"
+SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitBtn.Font = Enum.Font.GothamBold
+SubmitBtn.TextSize = 15
+SubmitBtn.Parent = KeyFrame
+
+local sbCorner = Instance.new("UICorner")
+sbCorner.CornerRadius = UDim.new(0, 8)
+sbCorner.Parent = SubmitBtn
+
+local ErrorMsg = Instance.new("TextLabel")
+ErrorMsg.Size = UDim2.new(1, -30, 0, 20)
+ErrorMsg.Position = UDim2.new(0, 15, 0, 196)
+ErrorMsg.BackgroundTransparency = 1
+ErrorMsg.Text = ""
+ErrorMsg.TextColor3 = Color3.fromRGB(255, 80, 80)
+ErrorMsg.Font = Enum.Font.GothamBold
+ErrorMsg.TextSize = 12
+ErrorMsg.TextXAlignment = Enum.TextXAlignment.Center
+ErrorMsg.Parent = KeyFrame
+
+local SupportLabel = Instance.new("TextLabel")
+SupportLabel.Size = UDim2.new(1, -30, 0, 20)
+SupportLabel.Position = UDim2.new(0, 15, 0, 220)
+SupportLabel.BackgroundTransparency = 1
+SupportLabel.RichText = true
+SupportLabel.Text = 'Precisa de ajuda? key em <font color="rgb(80,160,255)">servidor do Discord</font>'
+SupportLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+SupportLabel.Font = Enum.Font.Gotham
+SupportLabel.TextSize = 11
+SupportLabel.TextXAlignment = Enum.TextXAlignment.Center
+SupportLabel.Parent = KeyFrame
+
+local DiscordClickArea = Instance.new("TextButton")
+DiscordClickArea.Size = UDim2.new(1, -30, 0, 20)
+DiscordClickArea.Position = UDim2.new(0, 15, 0, 220)
+DiscordClickArea.BackgroundTransparency = 1
+DiscordClickArea.Text = ""
+DiscordClickArea.Parent = KeyFrame
+
+DiscordClickArea.MouseButton1Click:Connect(function()
+    local abriu = abrirLink(DISCORD_LINK)
+    if abriu then
+        SupportLabel.Text = 'Abrindo... <font color="rgb(80,160,255)">discord.gg/9CR5Fnqrv2</font>'
+    else
+        SupportLabel.Text = 'Copiado! <font color="rgb(80,160,255)">discord.gg/9CR5Fnqrv2</font>'
+    end
+    task.wait(2)
+    SupportLabel.Text = 'Precisa de ajuda? key em <font color="rgb(80,160,255)">servidor do Discord</font>'
+end)
+
+-- ============ FRASE + SETA ============
+local ArrowHint = Instance.new("TextLabel")
+ArrowHint.Size = UDim2.new(1, -30, 0, 18)
+ArrowHint.Position = UDim2.new(0, 15, 0, 244)
+ArrowHint.BackgroundTransparency = 1
+ArrowHint.RichText = true
+ArrowHint.Text = '<font color="rgb(80,160,255)">Key disponível em Discord</font> <font color="rgb(255,220,80)">↘</font>'
+ArrowHint.TextColor3 = Color3.fromRGB(200, 200, 200)
+ArrowHint.Font = Enum.Font.GothamBold
+ArrowHint.TextSize = 12
+ArrowHint.TextXAlignment = Enum.TextXAlignment.Right
+ArrowHint.Parent = KeyFrame
+
+-- ============ BOTÃO DISCORD ============
+local EnterServerBtn = Instance.new("TextButton")
+EnterServerBtn.Size = UDim2.new(1, -30, 0, 36)
+EnterServerBtn.Position = UDim2.new(0, 15, 1, -46)
+EnterServerBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+EnterServerBtn.BorderSizePixel = 0
+EnterServerBtn.Text = "🌐 ENTRAR NO DISCORD"
+EnterServerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+EnterServerBtn.Font = Enum.Font.GothamBold
+EnterServerBtn.TextSize = 13
+EnterServerBtn.Parent = KeyFrame
+
+local esCorner = Instance.new("UICorner")
+esCorner.CornerRadius = UDim.new(0, 8)
+esCorner.Parent = EnterServerBtn
+
+local esStroke = Instance.new("UIStroke")
+esStroke.Color = Color3.fromRGB(120, 130, 255)
+esStroke.Thickness = 1.5
+esStroke.Transparency = 0.3
+esStroke.Parent = EnterServerBtn
+
+EnterServerBtn.MouseEnter:Connect(function()
+    EnterServerBtn.BackgroundColor3 = Color3.fromRGB(105, 118, 255)
+    esStroke.Transparency = 0
+end)
+EnterServerBtn.MouseLeave:Connect(function()
+    EnterServerBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+    esStroke.Transparency = 0.3
+end)
+
+EnterServerBtn.MouseButton1Click:Connect(function()
+    local abriu = abrirLink(DISCORD_LINK)
+    if abriu then
+        EnterServerBtn.Text = "✅ ABRINDO..."
+    else
+        EnterServerBtn.Text = "✅ LINK COPIADO!"
+    end
+    task.wait(2)
+    EnterServerBtn.Text = "🌐 ENTRAR NO DISCORD"
+end)
+
+-- ============ DRAG NA TELA DE KEY ============
+local dragging = false
+local dragStart, startPos
+
+KeyFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 
+    or input.UserInputType == Enum.UserInputType.Touch then
+        
+        local objects = PlayerGui:GetGuiObjectsAtPosition(input.Position.X, input.Position.Y)
+        local clicouBotao = false
+        for _, obj in ipairs(objects) do
+            if obj:IsA("TextButton") or obj:IsA("TextBox") then
+                clicouBotao = true
+                break
+            end
+        end
+        
+        if not clicouBotao then
+            dragging = true
+            dragStart = input.Position
+            startPos = KeyFrame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement 
+    or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        KeyFrame.Position = UDim2.new(
+            startPos.X.Scale, startPos.X.Offset + delta.X,
+            startPos.Y.Scale, startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+-- ============ VALIDAÇÃO DA KEY ============
+local function verificarKey()
+    local keyDigitada = KeyInput.Text
+    if keyDigitada == KEY_CORRETA then
+        ErrorMsg.Text = "✅ Key válida! Carregando Dark Hub..."
+        ErrorMsg.TextColor3 = Color3.fromRGB(100, 255, 120)
+        task.wait(1)
+        KeyGui:Destroy()
+        if _G.CarregarDarkHub then
+            _G.CarregarDarkHub()
+        end
+    else
+        ErrorMsg.Text = "❌ Key incorreta. Tente novamente."
+        ErrorMsg.TextColor3 = Color3.fromRGB(255, 80, 80)
+        KeyInput.Text = ""
+        local originalPos = InputFrame.Position
+        for i = 1, 4 do
+            InputFrame.Position = originalPos + UDim2.new(0, 6, 0, 0)
+            task.wait(0.05)
+            InputFrame.Position = originalPos - UDim2.new(0, 6, 0, 0)
+            task.wait(0.05)
+        end
+        InputFrame.Position = originalPos
+    end
+end
+
+SubmitBtn.MouseButton1Click:Connect(verificarKey)
+
+KeyInput.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        verificarKey()
+    end
+end)
+
+-- ============================================================
+-- PARTE 2: DARK HUB (COM SCROLL + ORDEM PERSONALIZADA)
+-- ============================================================
+
+_G.CarregarDarkHub = function()
+    -- ============ SCRIPTS DISPONÍVEIS (ORDEM PERSONALIZADA) ============
+    local hubs = {
+        { nome = "Miranda Hub", cor = Color3.fromRGB(255, 100, 100), link = "https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/stealaeggs" },
+        { nome = "Miranda AFK Pago", cor = Color3.fromRGB(180, 130, 255), link = "https://api.luarmor.net/files/v4/loaders/6b07a458832f08b2314f706f14723212.lua" },
+        { nome = "Lennon Hub", cor = Color3.fromRGB(120, 200, 255), link = "https://raw.githubusercontent.com/lennonxscripts/lennonhubv3/refs/heads/main/stealanegg.lua" },
+        { nome = "Lennon Auto Farm", cor = Color3.fromRGB(80, 160, 255), link = "https://api.luarmor.net/files/v4/loaders/4595fe31a5f7a8b4f4dd7071f3119ef7.lua" },
+        { nome = "LKZ Hub", cor = Color3.fromRGB(150, 200, 100), link = "https://api.luarmor.net/files/v4/loaders/65bf3459d87ba3ac46350e154b640929.lua" },
+        { nome = "Fake Admin", cor = Color3.fromRGB(255, 80, 80), link = "https://raw.githubusercontent.com/Dayvinksthik/Script/refs/heads/main/Games/JoshBNS-Crack.lua" },
+        { nome = "Chilli Hub", cor = Color3.fromRGB(255, 120, 200), link = "https://pastefy.app/Eu0Ro4H8/raw" },
+        { nome = "Server PV", cor = Color3.fromRGB(255, 220, 100), link = "https://pastefy.app/YoZocJ8O/raw" },
+        { nome = "FYY Hub", cor = Color3.fromRGB(255, 150, 200), link = "https://raw.githubusercontent.com/napun87/stealanegg/refs/heads/main/fly.lua" },
+        { nome = "FoxName Hub", cor = Color3.fromRGB(255, 180, 80), link = "https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua" },
+        { nome = "On Hub", cor = Color3.fromRGB(100, 255, 180), link = "https://raw.githubusercontent.com/davizin713/ONhub/refs/heads/main/script.lua" },
+        { nome = "Clover Hub", cor = Color3.fromRGB(120, 255, 120), link = "https://cloverhub.app/clover.lua" },
+    }
+
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "DarkHub"
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    ScreenGui.Parent = PlayerGui
+
+    local Main = Instance.new("Frame")
+    Main.Size = UDim2.new(0, 260, 0, 400)
+    Main.Position = UDim2.new(0.5, -130, 0.5, -200)
+    Main.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+    Main.BorderSizePixel = 0
+    Main.Active = true
+    Main.Parent = ScreenGui
+
+    local mainCorner = Instance.new("UICorner")
+    mainCorner.CornerRadius = UDim.new(0, 14)
+    mainCorner.Parent = Main
+
+    local mainStroke = Instance.new("UIStroke")
+    mainStroke.Color = Color3.fromRGB(220, 50, 80)
+    mainStroke.Thickness = 2
+    mainStroke.Parent = Main
+
+    local topBar = Instance.new("Frame")
+    topBar.Size = UDim2.new(1, -20, 0, 2)
+    topBar.Position = UDim2.new(0, 10, 0, 50)
+    topBar.BackgroundColor3 = Color3.fromRGB(220, 50, 80)
+    topBar.BorderSizePixel = 0
+    topBar.Parent = Main
+
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, -60, 0, 25)
+    Title.Position = UDim2.new(0, 10, 0, 12)
+    Title.BackgroundTransparency = 1
+    Title.Text = "DARK HUB"
+    Title.TextColor3 = Color3.fromRGB(220, 50, 80)
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 20
+    Title.TextXAlignment = Enum.TextXAlignment.Center
+    Title.Parent = Main
+
+    local Subtitle = Instance.new("TextLabel")
+    Subtitle.Size = UDim2.new(1, -30, 0, 16)
+    Subtitle.Position = UDim2.new(0, 10, 0, 34)
+    Subtitle.BackgroundTransparency = 1
+    Subtitle.Text = "discord.gg/9CR5Fnqrv2"
+    Subtitle.TextColor3 = Color3.fromRGB(150, 150, 155)
+    Subtitle.Font = Enum.Font.Gotham
+    Subtitle.TextSize = 10
+    Subtitle.TextXAlignment = Enum.TextXAlignment.Center
+    Subtitle.Parent = Main
+
+    -- ============ CONTAINER COM SCROLL ============
+    local BtnContainer = Instance.new("ScrollingFrame")
+    BtnContainer.Size = UDim2.new(1, -20, 0, 280)
+    BtnContainer.Position = UDim2.new(0, 10, 0, 58)
+    BtnContainer.BackgroundTransparency = 1
+    BtnContainer.BorderSizePixel = 0
+    BtnContainer.ScrollBarThickness = 4
+    BtnContainer.ScrollBarImageColor3 = Color3.fromRGB(220, 50, 80)
+    BtnContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
+    BtnContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    BtnContainer.ScrollingDirection = Enum.ScrollingDirection.Y
+    BtnContainer.Parent = Main
+
+    local layout = Instance.new("UIListLayout")
+    layout.Padding = UDim.new(0, 6)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Parent = BtnContainer
+
+    local function criarBotaoHub(hub, ordem)
+        local btn = Instance.new("TextButton")
+        btn.Name = hub.nome
+        btn.Size = UDim2.new(1, -8, 0, 40)
+        btn.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
+        btn.BorderSizePixel = 0
+        btn.Text = ""
+        btn.AutoButtonColor = false
+        btn.LayoutOrder = ordem
+        btn.Parent = BtnContainer
+
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 8)
+        corner.Parent = btn
+
+        local stroke = Instance.new("UIStroke")
+        stroke.Color = hub.cor
+        stroke.Thickness = 1.5
+        stroke.Transparency = 0.3
+        stroke.Parent = btn
+
+        local nomeLabel = Instance.new("TextLabel")
+        nomeLabel.Size = UDim2.new(0.6, 0, 1, 0)
+        nomeLabel.Position = UDim2.new(0, 15, 0, 0)
+        nomeLabel.BackgroundTransparency = 1
+        nomeLabel.Text = hub.nome
+        nomeLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
+        nomeLabel.Font = Enum.Font.GothamBold
+        nomeLabel.TextSize = 14
+        nomeLabel.TextXAlignment = Enum.TextXAlignment.Left
+        nomeLabel.TextYAlignment = Enum.TextYAlignment.Center
+        nomeLabel.Parent = btn
+
+        local stateLabel = Instance.new("TextLabel")
+        stateLabel.Size = UDim2.new(0, 70, 1, 0)
+        stateLabel.Position = UDim2.new(1, -80, 0, 0)
+        stateLabel.BackgroundTransparency = 1
+        stateLabel.Text = "▶ Executar"
+        stateLabel.TextColor3 = Color3.fromRGB(150, 150, 155)
+        stateLabel.Font = Enum.Font.Gotham
+        stateLabel.TextSize = 11
+        stateLabel.TextXAlignment = Enum.TextXAlignment.Right
+        stateLabel.TextYAlignment = Enum.TextYAlignment.Center
+        stateLabel.Parent = btn
+
+        btn.MouseEnter:Connect(function()
+            btn.BackgroundColor3 = Color3.fromRGB(32, 32, 38)
+            stroke.Transparency = 0
+        end)
+        btn.MouseLeave:Connect(function()
+            btn.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
+            stroke.Transparency = 0.3
+        end)
+
+        btn.MouseButton1Click:Connect(function()
+            if stateLabel.Text == "Carregando..." then return end
+
+            btn.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
+            stateLabel.Text = "Carregando..."
+            stateLabel.TextColor3 = Color3.fromRGB(255, 200, 100)
+
+            local isLuarmor = string.find(hub.link, "luarmor", 1, true) ~= nil
+
+            if isLuarmor then
+                local avisoGui = Instance.new("ScreenGui")
+                avisoGui.Name = "DarkHubAviso"
+                avisoGui.ResetOnSpawn = false
+                avisoGui.DisplayOrder = 999
+                avisoGui.Parent = PlayerGui
+
+                local avisoFrame = Instance.new("Frame")
+                avisoFrame.Size = UDim2.new(0, 260, 0, 60)
+                avisoFrame.Position = UDim2.new(0.5, -130, 0, 20)
+                avisoFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 22)
+                avisoFrame.BorderSizePixel = 0
+                avisoFrame.Parent = avisoGui
+
+                local avisoCorner = Instance.new("UICorner")
+                avisoCorner.CornerRadius = UDim.new(0, 8)
+                avisoCorner.Parent = avisoFrame
+
+                local avisoStroke = Instance.new("UIStroke")
+                avisoStroke.Color = Color3.fromRGB(255, 200, 100)
+                avisoStroke.Thickness = 1.5
+                avisoStroke.Parent = avisoFrame
+
+                local avisoLabel = Instance.new("TextLabel")
+                avisoLabel.Size = UDim2.new(1, -20, 1, 0)
+                avisoLabel.Position = UDim2.new(0, 10, 0, 0)
+                avisoLabel.BackgroundTransparency = 1
+                avisoLabel.Text = "⏳ Carregando " .. hub.nome .. "...\nAguarde (pode demorar)"
+                avisoLabel.TextColor3 = Color3.fromRGB(255, 220, 100)
+                avisoLabel.Font = Enum.Font.GothamBold
+                avisoLabel.TextSize = 12
+                avisoLabel.TextWrapped = true
+                avisoLabel.Parent = avisoFrame
+
+                task.delay(5, function()
+                    if avisoGui and avisoGui.Parent then
+                        avisoGui:Destroy()
+                    end
+                end)
+            end
+
+            local thread = coroutine.create(function()
+                local ok, err = pcall(function()
+                    loadstring(game:HttpGet(hub.link))()
+                end)
+                
+                task.spawn(function()
+                    if ok then
+                        stateLabel.Text = "✅ OK"
+                        stateLabel.TextColor3 = Color3.fromRGB(100, 255, 120)
+                        task.wait(2)
+                        stateLabel.Text = "▶ Executar"
+                        stateLabel.TextColor3 = Color3.fromRGB(150, 150, 155)
+                        btn.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
+                    else
+                        stateLabel.Text = "❌ Erro"
+                        stateLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+                        task.wait(2)
+                        stateLabel.Text = "▶ Executar"
+                        stateLabel.TextColor3 = Color3.fromRGB(150, 150, 155)
+                        btn.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
+                    end
+                end)
+            end)
+
+            coroutine.resume(thread)
+
+            task.delay(30, function()
+                if stateLabel.Text == "Carregando..." then
+                    stateLabel.Text = "⚠ Timeout"
+                    stateLabel.TextColor3 = Color3.fromRGB(255, 150, 80)
+                    task.wait(2)
+                    stateLabel.Text = "▶ Executar"
+                    stateLabel.TextColor3 = Color3.fromRGB(150, 150, 155)
+                    btn.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
+                end
+            end)
+        end)
+    end
+
+    for i, hub in ipairs(hubs) do
+        criarBotaoHub(hub, i)
+    end
+
+    local GoBtn = Instance.new("TextButton")
+    GoBtn.Size = UDim2.new(1, -20, 0, 38)
+    GoBtn.Position = UDim2.new(0, 10, 1, -48)
+    GoBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+    GoBtn.BorderSizePixel = 0
+    GoBtn.Text = "💬 DISCORD"
+    GoBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    GoBtn.Font = Enum.Font.GothamBold
+    GoBtn.TextSize = 14
+    GoBtn.Parent = Main
+
+    local goCorner = Instance.new("UICorner")
+    goCorner.CornerRadius = UDim.new(0, 8)
+    goCorner.Parent = GoBtn
+
+    GoBtn.MouseButton1Click:Connect(function()
+        abrirLink(DISCORD_LINK)
+        GoBtn.Text = "COPIADO!"
+        task.wait(1.5)
+        GoBtn.Text = "💬 DISCORD"
+    end)
+
+    local CloseBtn = Instance.new("TextButton")
+    CloseBtn.Size = UDim2.new(0, 24, 0, 24)
+    CloseBtn.Position = UDim2.new(1, -30, 0, 8)
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    CloseBtn.BorderSizePixel = 0
+    CloseBtn.Text = "X"
+    CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseBtn.Font = Enum.Font.GothamBold
+    CloseBtn.TextSize = 12
+    CloseBtn.ZIndex = 5
+    CloseBtn.Parent = Main
+
+    local closeCorner = Instance.new("UICorner")
+    closeCorner.CornerRadius = UDim.new(0, 6)
+    closeCorner.Parent = CloseBtn
+
+    CloseBtn.MouseButton1Click:Connect(function()
+        local confirmGui = Instance.new("ScreenGui")
+        confirmGui.Name = "DarkHubConfirm"
+        confirmGui.ResetOnSpawn = false
+        confirmGui.DisplayOrder = 999
+        confirmGui.Parent = PlayerGui
+
+        local bg = Instance.new("Frame")
+        bg.Size = UDim2.new(1, 0, 1, 0)
+        bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        bg.BackgroundTransparency = 0.5
+        bg.BorderSizePixel = 0
+        bg.Parent = confirmGui
+
+        local cFrame = Instance.new("Frame")
+        cFrame.Size = UDim2.new(0, 280, 0, 150)
+        cFrame.Position = UDim2.new(0.5, -140, 0.5, -75)
+        cFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+        cFrame.BorderSizePixel = 0
+        cFrame.Parent = confirmGui
+
+        local cCorner = Instance.new("UICorner")
+        cCorner.CornerRadius = UDim.new(0, 12)
+        cCorner.Parent = cFrame
+
+        local cStroke = Instance.new("UIStroke")
+        cStroke.Color = Color3.fromRGB(220, 50, 80)
+        cStroke.Thickness = 2
+        cStroke.Parent = cFrame
+
+        local cTitle = Instance.new("TextLabel")
+        cTitle.Size = UDim2.new(1, 0, 0, 30)
+        cTitle.Position = UDim2.new(0, 0, 0, 15)
+        cTitle.BackgroundTransparency = 1
+        cTitle.Text = "DARK HUB"
+        cTitle.TextColor3 = Color3.fromRGB(220, 50, 80)
+        cTitle.Font = Enum.Font.GothamBold
+        cTitle.TextSize = 18
+        cTitle.Parent = cFrame
+
+        local cMsg = Instance.new("TextLabel")
+        cMsg.Size = UDim2.new(1, 0, 0, 40)
+        cMsg.Position = UDim2.new(0, 0, 0, 50)
+        cMsg.BackgroundTransparency = 1
+        cMsg.Text = "Deseja realmente fechar\no Dark Hub?"
+        cMsg.TextColor3 = Color3.fromRGB(255, 255, 255)
+        cMsg.Font = Enum.Font.Gotham
+        cMsg.TextSize = 13
+        cMsg.Parent = cFrame
+
+        local btnYes = Instance.new("TextButton")
+        btnYes.Size = UDim2.new(0, 110, 0, 36)
+        btnYes.Position = UDim2.new(0, 20, 1, -50)
+        btnYes.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+        btnYes.BorderSizePixel = 0
+        btnYes.Text = "Confirmar"
+        btnYes.TextColor3 = Color3.fromRGB(255, 255, 255)
+        btnYes.Font = Enum.Font.GothamBold
+        btnYes.TextSize = 13
+        btnYes.Parent = cFrame
+
+        local yCorner = Instance.new("UICorner")
+        yCorner.CornerRadius = UDim.new(0, 8)
+        yCorner.Parent = btnYes
+
+        local btnNo = Instance.new("TextButton")
+        btnNo.Size = UDim2.new(0, 110, 0, 36)
+        btnNo.Position = UDim2.new(1, -130, 1, -50)
+        btnNo.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+        btnNo.BorderSizePixel = 0
+        btnNo.Text = "Cancelar"
+        btnNo.TextColor3 = Color3.fromRGB(255, 255, 255)
+        btnNo.Font = Enum.Font.GothamBold
+        btnNo.TextSize = 13
+        btnNo.Parent = cFrame
+
+        local nCorner = Instance.new("UICorner")
+        nCorner.CornerRadius = UDim.new(0, 8)
+        nCorner.Parent = btnNo
+
+        btnYes.MouseButton1Click:Connect(function()
+            confirmGui:Destroy()
+            ScreenGui:Destroy()
+        end)
+
+        btnNo.MouseButton1Click:Connect(function()
+            confirmGui:Destroy()
+        end)
+    end)
+
+    -- ============ DRAG DO DARK HUB ============
+    local draggingHub = false
+    local dragStartHub, startPosHub
+
+    Main.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 
+        or input.UserInputType == Enum.UserInputType.Touch then
+            local objects = PlayerGui:GetGuiObjectsAtPosition(input.Position.X, input.Position.Y)
+            local clicouBotao = false
+            for _, obj in ipairs(objects) do
+                if obj:IsA("TextButton") then
+                    clicouBotao = true
+                    break
+                end
+            end
+            if not clicouBotao then
+                draggingHub = true
+                dragStartHub = input.Position
+                startPosHub = Main.Position
+                input.Changed:Connect(function()
+                    if input.UserInputState == Enum.UserInputState.End then
+                        draggingHub = false
+                    end
+                end)
+            end
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if draggingHub and (input.UserInputType == Enum.UserInputType.MouseMovement 
+        or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStartHub
+            Main.Position = UDim2.new(
+                startPosHub.X.Scale, startPosHub.X.Offset + delta.X,
+                startPosHub.Y.Scale, startPosHub.Y.Offset + delta.Y
+            )
+        end
+    end)
+end
