@@ -392,6 +392,7 @@ _G.CarregarDarkHub = function()
         { nome = "Lennon Hub", cor = Color3.fromRGB(120, 200, 255), link = "https://raw.githubusercontent.com/lennonxscripts/lennonhubv3/refs/heads/main/stealanegg.lua" },
         { nome = "Lennon Auto Farm", cor = Color3.fromRGB(80, 160, 255), link = "https://api.luarmor.net/files/v4/loaders/4595fe31a5f7a8b4f4dd7071f3119ef7.lua" },
         { nome = "LKZ Hub", cor = Color3.fromRGB(150, 200, 100), link = "https://api.luarmor.net/files/v4/loaders/65bf3459d87ba3ac46350e154b640929.lua" },
+        { nome = "BK's Hub", cor = Color3.fromRGB(255, 130, 60), link = "https://api.luarmor.net/files/v4/loaders/9ee4edde227ac85f50872bf9e4226508.lua" },
         { nome = "Fake Admin", cor = Color3.fromRGB(255, 80, 80), link = "https://raw.githubusercontent.com/Dayvinksthik/Script/refs/heads/main/Games/JoshBNS-Crack.lua" },
         { nome = "Chilli Hub", cor = Color3.fromRGB(255, 120, 200), link = "https://pastefy.app/Eu0Ro4H8/raw" },
         { nome = "Server PV", cor = Color3.fromRGB(255, 220, 100), link = "https://pastefy.app/YoZocJ8O/raw" },
